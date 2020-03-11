@@ -2,6 +2,7 @@ package ru.spbpu.models.actors;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import ru.spbpu.models.system.Bet;
 import ru.spbpu.models.system.Order;
 
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @Table(name = "buyers")
 @Entity(name = "Buyer")
 @EqualsAndHashCode(callSuper = true)
@@ -24,5 +26,9 @@ public class Buyer extends User {
         super(username, password, userStatus);
         this.orders = orders;
         this.bets = bets;
+    }
+
+    public Buyer(String username, String password) {
+        super(username, password);
     }
 }

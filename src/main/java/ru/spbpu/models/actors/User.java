@@ -24,8 +24,13 @@ public abstract class User extends AbstractDomain {
     @Column(name = "user_status")
     private UserStatus userStatus;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public enum UserStatus {
-        ONLINE,
-        OFFLINE
+        OFFLINE,
+        ONLINE
     }
 }
