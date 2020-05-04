@@ -2,6 +2,7 @@ package ru.spbpu.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +26,10 @@ public class MarketplaceController {
     }
 
     @PostMapping("login")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<? extends User> login(@RequestBody final Map<String, Object> data) {
         return marketplaceService.login(data)
-                .map(user -> new ResponseEntity<>(user, HttpStatus.FOUND))
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
