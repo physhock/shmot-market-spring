@@ -1,18 +1,13 @@
 package ru.spbpu.controllers.actors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.spbpu.models.actors.User;
-import ru.spbpu.models.system.Item;
-import ru.spbpu.repositories.system.ItemRepository;
+import org.springframework.web.bind.annotation.*;
+import ru.spbpu.models.system.Bet;
+import ru.spbpu.models.system.Order;
+import ru.spbpu.services.BuyerService;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author fshkolni
@@ -20,13 +15,31 @@ import java.util.Map;
 @RestController
 @RequestMapping("buyer")
 public class BuyerController {
+    private final BuyerService buyerService;
 
-    private ItemRepository itemRepository;
+    public BuyerController(BuyerService buyerService) {
+        this.buyerService = buyerService;
+    }
 
+    @PostMapping("bet/{buyerId}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<Long> bet(@RequestBody final Bet bet, @PathVariable Long buyerId) {
+        return new ResponseEntity<>(buyerService.saveBet(bet, buyerId), HttpStatus.OK);
+    }
 
-//    @GetMapping("{itemId}/bet")
-//    @CrossOrigin(origins = "*", allowedHeaders = "*")
-//    public ResponseEntity bet(@RequestBody final Map<String, Object> data) {
-//        return ResponseEntity.ok().build();
-//    }
+    @GetMapping("getBets")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<List<Bet>> getBets(@RequestParam Long id) {
+        return buyerService.getBuyer(id)
+                .map(buyer -> new ResponseEntity<>(buyer.getBets(), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("getOrders")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<List<Order>> getOrders(@RequestParam Long id) {
+        return buyerService.getBuyer(id)
+                .map(buyer -> new ResponseEntity<>(buyer.getOrders(), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

@@ -1,13 +1,16 @@
 package ru.spbpu.models.system;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import ru.spbpu.models.AbstractDomain;
 import ru.spbpu.models.actors.Administrator;
 
 import javax.persistence.*;
 
 @Data
+@NoArgsConstructor
 @Table(name = "deals")
 @Entity(name = "Deal")
 @EqualsAndHashCode(callSuper = true)
@@ -17,6 +20,7 @@ public class Deal extends AbstractDomain {
     @OneToOne
     private Bet bet;
     @OneToOne
+    @JsonIgnore
     private Administrator administrator;
 
     @Column(name = "deal_status")
